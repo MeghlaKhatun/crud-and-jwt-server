@@ -28,6 +28,12 @@ async function run() {
 
     const homeServiceCollection=client.db("HomeDB").collection('services')
 
+    app.get('/service',async(req,res)=>{
+      const cursor = homeServiceCollection.find();
+      const result = await cursor.toArray();
+      res.send(result)
+    })
+
       app.post('/service',async(req,res)=>{
         const addService=req.body;
         console.log(addService);

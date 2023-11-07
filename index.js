@@ -27,6 +27,7 @@ async function run() {
     // await client.connect();
 
     const homeServiceCollection=client.db("HomeDB").collection('services')
+    const serviceBookingCollection=client.db("HomeDB").collection('bookings')
 
     app.get('/service',async(req,res)=>{
       const cursor = homeServiceCollection.find();
@@ -51,6 +52,14 @@ async function run() {
         res.send(result)
       })
 
+
+      
+      app.post('/booking',async(req,res)=>{
+        const addBooking=req.body;
+        console.log(addBooking);
+        const result = await serviceBookingCollection.insertOne(addBooking);
+        res.send(result)
+      })
 
 
 

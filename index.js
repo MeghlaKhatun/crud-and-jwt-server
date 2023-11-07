@@ -67,6 +67,31 @@ async function run() {
         const result = await homeServiceCollection.deleteOne(filter);
         res.send(result);
     })
+
+
+    app.put("/service/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updateService=req.body;
+
+      const service = {
+        $set: {
+          name: updateService.name,
+          image: updateService.image,
+          service_name: updateService.service_name,
+          area: updateService.area,
+          email: updateService.email,
+          price: updateService.price,
+          description:updateService.description,
+          profile:updateService.profile,
+        }
+      }
+
+      const result =await homeServiceCollection.updateOne(filter,service,options)
+      res.send(result)
+
+    })
   
 
 

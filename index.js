@@ -29,6 +29,8 @@ async function run() {
     const homeServiceCollection=client.db("HomeDB").collection('services')
     const serviceBookingCollection=client.db("HomeDB").collection('bookings')
 
+
+    // service method
     app.get('/service',async(req,res)=>{
       const cursor = homeServiceCollection.find();
       const result = await cursor.toArray();
@@ -50,9 +52,25 @@ async function run() {
         console.log(addService);
         const result = await homeServiceCollection.insertOne(addService);
         res.send(result)
-      })
+      });
+
+      
+      app.delete('/service', async (req, res) => {
+        const service = req.body;
+        // console.log(service);
+        const query = { prodId: service.id };
+        const filter = {
+            $and: [
+                { email: service.email },
+                {id: service.id } ]
+        }
+        const result = await homeServiceCollection.deleteOne(filter);
+        res.send(result);
+    })
+  
 
 
+     // booking method
       
       app.post('/booking',async(req,res)=>{
         const addBooking=req.body;
@@ -61,6 +79,11 @@ async function run() {
         res.send(result)
       })
 
+      app.get('/booking',async(req,res)=>{
+        const cursor = serviceBookingCollection.find();
+        const result = await cursor.toArray();
+        res.send(result)
+      })
 
 
 
